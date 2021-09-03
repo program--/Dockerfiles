@@ -26,7 +26,7 @@ jobs:
         uses: docker/setup-buildx-actions@v1
       
       - name: Login to DockerHub
-        uses: docker/login-actions@v1
+        uses: docker/login-action@v1
         with:
           username: jsinghm
           password: ${{ secrets.DOCKERHUB_TOKEN }}
