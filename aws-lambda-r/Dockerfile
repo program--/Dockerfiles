@@ -13,10 +13,11 @@ RUN amazon-linux-extras enable epel
 
 # Install R
 RUN if [[ -z "$R_VERSION" ]] ; \
-    then wget https://cdn.rstudio.com/r/centos-7/pkgs/R-${R_VERSION}-1-1.x86_64.rpm \
+    then amazon-linux-extras install R4 ; \
+    else wget https://cdn.rstudio.com/r/centos-7/pkgs/R-${R_VERSION}-1-1.x86_64.rpm \
          && yum -y install R-${R_VERSION}-1-1.x86_64.rpm \
          && rm R-${R_VERSION}-1-1.x86_64.rpm ; \
-    else amazon-linux-extras install R4
+    fi
 
 # Fix $PATH and $TAR
 ENV PATH="${PATH}:/opt/R/${R_VERSION}/bin/" \
