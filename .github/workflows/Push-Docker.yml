@@ -1,0 +1,41 @@
+on:
+  push:
+    branches:
+      - 'master'
+
+name: Push Containers to DockerHub
+
+jobs:
+  build:
+    name: Build
+
+    strategy:
+      matrix:
+        container:
+          - "aws-lambda-r"
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-actions@v1
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-actions@v1
+      
+      - name: Login to DockerHub
+        uses: docker/login-actions@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+      - name: Build and Push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.container }}
+          push: true
+          tags: jsinghm/${{ matrix.container }}:latest,jsinghm/${{ matrix.container }}:${{ github.sha }}
+          cache-from: jsinghm/${{ matrix.container }}:latest
