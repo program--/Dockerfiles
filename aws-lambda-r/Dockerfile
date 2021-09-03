@@ -5,7 +5,6 @@ ARG R_VERSION
 # Install basic system dependencies
 RUN yum -y install wget \
                    tar \
-                   openssl-devel \
                    amazon-linux-extras
 
 # Enable EPEL 7
@@ -22,6 +21,10 @@ RUN if [[ -z "$R_VERSION" ]] ; \
 # Fix $PATH and $TAR
 ENV PATH="${PATH}:/opt/R/${R_VERSION}/bin/" \
     TAR="/bin/tar"
+
+RUN yum -y install openssl-devel \
+                   libcurl-devel \
+                   libxml2-devel
 
 # Install `pak` and runtime.R dependencies
 RUN Rscript -e "install.packages('pak', repos = 'https://cloud.r-project.org/')"
