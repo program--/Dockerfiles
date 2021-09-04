@@ -27,8 +27,8 @@ RUN yum -y install openssl-devel \
                    libxml2-devel
 
 # Install `pak` and runtime.R dependencies
-RUN Rscript -e "install.packages('pak', repos = 'https://cloud.r-project.org/')"
-RUN Rscript -e "pak::pkg_install(c('httr', 'jsonlite', 'glue', 'logger'))"
+RUN Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/dev/')"
+RUN Rscript -e "pak::repo_add('https://cloud.r-project.org/'); pak::pkg_install(c('httr', 'jsonlite', 'glue', 'logger'))"
 
 # Setup Lambda R Runtime
 COPY runtime.R ${LAMBDA_TASK_ROOT}/
