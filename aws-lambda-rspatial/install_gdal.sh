@@ -20,7 +20,7 @@ CFLAGS="-g -Wall" LDFLAGS="-s" ./configure \
                                --with-threads=yes \
                                --with-xerces=yes
 
-make -j 4 && make install
+make -j 2 && make install
 make check && ldconfig
 echo "\n${bold}GDAL Installed${normal}\n"
 

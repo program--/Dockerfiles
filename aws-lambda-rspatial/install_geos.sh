@@ -7,7 +7,7 @@ wget http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2
 bunzip2 geos-$GEOS_VERSION.tar.bz2
 tar -xvf geos-$GEOS_VERSION.tar
 cd geos-$GEOS_VERSION
-./configure && make -j 4 && make install
+./configure && make -j 2 && make install
 make check && ldconfig
 echo "GEOS Installed"
 
