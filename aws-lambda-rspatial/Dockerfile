@@ -15,8 +15,8 @@ RUN apk --no-cache add wget expat-dev gcc musl-dev g++ \
 
 # Install `sf`
 RUN installr -d \
-             -a "geos proj gdal" \
-             -t "gfortran geos-dev proj-dev gdal-dev openssl-dev sqlite-dev" \
+             -a "geos geos-dev proj proj-dev proj-util gdal gdal-dev gdal-tools" \
+             -t "gfortran openssl-dev sqlite-dev" \
              sf
 
 # Install `RNetCDF` and `raster`
