@@ -10,6 +10,7 @@ jobs:
     name: Build
 
     strategy:
+      fail-fast: false
       matrix:
         container:
           - "aws-lambda-r"
