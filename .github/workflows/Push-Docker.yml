@@ -13,6 +13,7 @@ jobs:
       matrix:
         container:
           - "aws-lambda-r"
+          - "aws-lambda-rspatial"
 
     runs-on: ubuntu-latest
     steps:
