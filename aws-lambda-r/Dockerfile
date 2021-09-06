@@ -1,34 +1,17 @@
-FROM public.ecr.aws/lambda/provided:al2
+FROM rhub/r-minimal:latest
+COPY --from=public.ecr.aws/lambda/provided:al2 /lambda-entrypoint.sh /lambda-entrypoint.sh
+COPY --from=public.ecr.aws/lambda/provided:al2 /usr/local/bin/aws-lambda-rie /usr/local/bin/aws-lambda-rie
 
-ARG R_VERSION
+ENV LAMBDA_TASK_ROOT=/var/task
+ENV LAMBDA_RUNTIME_DIR=/var/runtime
 
-# Install basic system dependencies
-RUN yum -y install wget \
-                   tar \
-                   amazon-linux-extras
+RUN mkdir /var/runtime
+RUN mkdir /var/task
+WORKDIR /var/task
+ENTRYPOINT ["/lambda-entrypoint.sh"]
 
-# Enable EPEL 7
-RUN amazon-linux-extras enable epel
-
-# Install R
-RUN if [[ -z "$R_VERSION" ]] ; \
-    then amazon-linux-extras install R4 ; \
-    else wget https://cdn.rstudio.com/r/centos-7/pkgs/R-${R_VERSION}-1-1.x86_64.rpm \
-         && yum -y install R-${R_VERSION}-1-1.x86_64.rpm \
-         && rm R-${R_VERSION}-1-1.x86_64.rpm ; \
-    fi
-
-# Fix $PATH and $TAR
-ENV PATH="${PATH}:/opt/R/${R_VERSION}/bin/" \
-    TAR="/bin/tar"
-
-RUN yum -y install openssl-devel \
-                   libcurl-devel \
-                   libxml2-devel
-
-# Install `pak` and runtime.R dependencies
-RUN Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/dev/')"
-RUN Rscript -e "pak::repo_add('https://cloud.r-project.org/'); pak::pkg_install(c('httr', 'jsonlite', 'glue', 'logger'))"
+# Install R and build tools
+RUN installr -d -t curl-dev httr jsonlite logger
 
 # Setup Lambda R Runtime
 COPY runtime.R ${LAMBDA_TASK_ROOT}/

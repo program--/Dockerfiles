@@ -25,6 +25,14 @@ jobs:
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -39,4 +47,10 @@ jobs:
           context: ${{ matrix.container }}
           push: true
           tags: jsinghm/${{ matrix.container }}:latest,jsinghm/${{ matrix.container }}:${{ github.sha }}
-          cache-from: jsinghm/${{ matrix.container }}:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+      
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache

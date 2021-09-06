@@ -6,6 +6,8 @@
 This `Dockerfile` implements a custom R runtime for
 AWS Lambda containers as described [here](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html).
 
+[`rhub/r-minimal`](https://github.com/r-hub/r-minimal) is used as the base container for this container.
+
 ## Usage
 To use your R functions with this container, simply create a new `Dockerfile` and use:
 ``` Dockerfile
