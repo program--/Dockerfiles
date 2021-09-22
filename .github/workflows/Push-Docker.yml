@@ -15,6 +15,7 @@ jobs:
         container:
           - "aws-lambda-r"
           - "aws-lambda-rspatial"
+          - "aws-lambda-rgrass"
           - "r-arrow"
 
     runs-on: ubuntu-latest

@@ -19,5 +19,5 @@ RUN installr -d \
              -t "gfortran openssl-dev sqlite-dev" \
              sf
 
-# Install `RNetCDF` and `raster`
-RUN installr -d -a "netcdf" -t "gfortran netcdf-dev" RNetCDF raster
+# Install `RNetCDF`, `raster`, and `terra`
+RUN installr -d -a "netcdf" -t "gfortran netcdf-dev" RNetCDF raster terra
