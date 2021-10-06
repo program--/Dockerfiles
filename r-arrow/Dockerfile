@@ -31,9 +31,7 @@ ENV ARROW_HOME=/usr/local \
 
 RUN apk add --no-cache gflags-dev rapidjson-dev re2-dev zstd-dev \
                        lz4-libs snappy-dev clang clang-extra-tools \
-                       brotli-libs utf8proc-dev libexecinfo
-
-RUN ldconfig
+                       utf8proc-dev libexecinfo
 
 # Download and build apache-arrow
 RUN mkdir /arrow \
@@ -72,10 +70,22 @@ RUN mkdir /arrow \
 FROM rhub/r-minimal:latest
 COPY --from=builder /usr/local /usr/local
 
-RUN apk --no-cache add pkgconfig libbz2 libgcc libstdc++ zlib-dev \
-                       gflags-dev rapidjson-dev re2-dev zstd-dev \
-                       lz4-libs snappy-dev brotli-libs utf8proc-dev \
-    && ldconfig
+RUN apk update \
+    && apk upgrade \
+    && apk --no-cache add pkgconfig libbz2 libgcc libstdc++ zlib-dev \
+                          gflags-dev rapidjson-dev zstd-dev \
+                          lz4-libs snappy-dev utf8proc-dev
+
+RUN apk add --no-cache git make gcc g++ musl-dev \
+    && git clone https://code.googlesource.com/re2 \
+    && cd re2 \
+    && make -j $(nproc) \
+    && make test \
+    && make install \
+    && make testinstall \
+    && cd .. \
+    && rm -r re2 \
+    && apk del git gcc g++ musl-dev
 
 RUN ARROW_USE_PKG_CONFIG=true \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
