@@ -15,9 +15,6 @@ RUN apk --no-cache add wget expat-dev gcc musl-dev g++ \
 
 # Install `sf`
 RUN installr -d \
-             -a "geos geos-dev proj proj-dev proj-util gdal gdal-dev gdal-tools" \
+             -a "geos-dev proj-dev proj-util gdal-dev gdal-tools netcdf-dev" \
              -t "gfortran openssl-dev sqlite-dev linux-headers" \
-             sf
-
-# Install `RNetCDF`, `raster`, and `terra`
-RUN installr -d -a "netcdf" -t "gfortran netcdf-dev" RNetCDF raster terra
+             raster RNetCDF sf terra
