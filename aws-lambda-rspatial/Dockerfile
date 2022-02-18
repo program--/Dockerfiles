@@ -2,7 +2,7 @@ FROM jsinghm/aws-lambda-r:latest
 
 # Install udunits2
 RUN apk --no-cache add wget expat-dev gcc musl-dev g++ \
-    && wget https://artifacts.unidata.ucar.edu/repository/downloads-udunits/udunits-2.2.28.tar.gz \
+    && wget https://artifacts.unidata.ucar.edu/repository/downloads-udunits/2.2.28/udunits-2.2.28.tar.gz \
     && tar xf udunits-2.2.28.tar.gz \
     && cd udunits-2.2.28/ \
     && ./configure --prefix=/usr \
