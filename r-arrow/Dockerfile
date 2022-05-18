@@ -23,7 +23,7 @@ RUN apk update \
 RUN pip install --no-cache-dir six pytest numpy cython
 RUN pip install --no-cache-dir pandas
 
-ARG ARROW_VERSION=7.0.0
+ARG ARROW_VERSION=8.0.0
 ARG ARROW_BUILD_TYPE=release
 
 ENV ARROW_HOME=/usr/local \
