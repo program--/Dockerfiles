@@ -29,7 +29,7 @@ ARG ARROW_BUILD_TYPE=release
 ENV ARROW_HOME=/usr/local \
     PARQUET_HOME=/usr/local
 
-RUN apk add --no-cache gflags-dev rapidjson-dev re2-dev zstd-dev \
+RUN apk add --no-cache gflags-dev rapidjson-dev re2-dev \
                        lz4-libs snappy-dev clang clang-extra-tools \
                        utf8proc-dev libexecinfo
 
@@ -47,7 +47,6 @@ RUN mkdir /arrow \
              -DARROW_S3=ON \
              -DARROW_WITH_BZ2=ON \
              -DARROW_WITH_ZLIB=ON \
-             -DARROW_WITH_ZSTD=ON \
              -DARROW_WITH_LZ4=ON \
              -DARROW_WITH_SNAPPY=ON \
              -DARROW_PARQUET=ON \
@@ -73,7 +72,7 @@ COPY --from=builder /usr/local /usr/local
 RUN apk update \
     && apk upgrade \
     && apk --no-cache add pkgconfig libbz2 libgcc libstdc++ zlib-dev \
-                          gflags-dev rapidjson-dev zstd-dev \
+                          gflags-dev rapidjson-dev \
                           lz4-libs snappy-dev utf8proc-dev
 
 RUN apk add --no-cache git make gcc g++ musl-dev \
